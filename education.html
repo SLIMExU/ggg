@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Університет Vistula | StudentConnect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #f9fafb;
+            --text-secondary: #e5e7eb;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --bg-card: #1f2937;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f9fafb;
+            --bg-secondary: #f3f4f6;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+
+        .theme-card {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover {
+            box-shadow: 0 10px 15px var(--shadow-color);
+            transform: translateY(-5px);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 9999px;
+            width: 1.25rem;
+            height: 1.25rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-hover);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Анімації */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .search-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
+        .program-card {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-primary {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+        }
+
+        .tag-secondary {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .tag-accent {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--accent-color);
+        }
+
+        /* Стилі для мобільного меню */
+        /* Стилі для мобільного меню */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary);
+    z-index: 100;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow-y: auto;
+    color: var(--text-primary);
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Оновлені стилі для навігаційних елементів у мобільному меню */
+.mobile-menu .nav-item {
+    color: var(--text-primary);
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.mobile-menu .nav-item:hover {
+    background-color: var(--primary-color);
+    opacity: 0.8;
+    color: white;
+}
+
+.mobile-menu .nav-item.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Стилі для інпуту пошуку в мобільному меню */
+.mobile-menu .search-input {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--text-secondary);
+    color: var(--text-primary);
+}
+
+.mobile-menu .search-icon {
+    color: var(--text-secondary);
+}
+
+/* Стиль для кнопки закриття */
+.mobile-menu button {
+    color: var(--text-primary);
+}
+
+.mobile-menu button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    opacity: 0.8;
+}
+    </style>
+</head>
+<body>
+    <nav class="gradient-bg text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="student2.html" class="flex items-center space-x-3">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-2xl font-bold tracking-wider">StudentConnect</h1>
+            </a>
+            <div class="hidden md:flex space-x-1 items-center">
+                <a href="student2.html" class="nav-item">
+                    <i class="fas fa-home mr-2"></i>Головна
+                </a>
+                <a href="student4.html" class="nav-item">
+                    <i class="fas fa-book mr-2"></i>Курси
+                </a>
+                <a href="student3.html" class="nav-item">
+                    <i class="fas fa-calendar-alt mr-2"></i>Події
+                </a>
+                <a href="#" class="nav-item relative">
+                    <i class="fas fa-envelope mr-2"></i>Повідомлення
+                    <span class="badge">3</span>
+                </a>
+                <a href="student1.html" class="nav-item">
+                    <i class="fas fa-question-circle mr-2"></i>Довідка
+                </a>
+                <div class="ml-4 relative">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Пошук..." class="search-input">
+                </div>
+                <button onclick="toggleTheme()" class="p-2 ml-4 rounded-full hover:bg-white/10 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <button class="md:hidden p-2 rounded-lg hover:bg-white/10" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu md:hidden" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-wider">StudentConnect</h1>
+            </div>
+            <button onclick="toggleMobileMenu()" class="p-2 rounded-lg">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-4">
+            <div class="relative mb-4">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Пошук..." class="search-input w-full">
+            </div>
+            <a href="student2.html" class="nav-item">
+                <i class="fas fa-home mr-2"></i>Головна
+            </a>
+            <a href="student4.html" class="nav-item">
+                <i class="fas fa-book mr-2"></i>Курси
+            </a>
+            <a href="student3.html" class="nav-item">
+                <i class="fas fa-calendar-alt mr-2"></i>Події
+            </a>
+            <a href="#" class="nav-item relative">
+                <i class="fas fa-envelope mr-2"></i>Повідомлення
+                <span class="badge">3</span>
+            </a>
+            <a href="student1.html" class="nav-item active">
+                <i class="fas fa-question-circle mr-2"></i>Довідка
+            </a>
+            <div class="mt-4 flex items-center">
+                <span class="mr-2">Тема:</span>
+                <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-white/10 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4 pb-16">
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="w-full md:w-2/3">
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <div class="flex items-center mb-4">
+                        <img src="/api/placeholder/150/150" alt="Vistula University Logo" class="w-16 h-16 mr-4 rounded-lg">
+                        <div>
+                            <h1 class="text-3xl font-bold">Університет Vistula</h1>
+                            <p class="text-secondary">Варшава, Польща</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <span class="tag tag-primary">Міжнародний</span>
+                        <span class="tag tag-secondary">Акредитований</span>
+                        <span class="tag tag-accent">Англомовні програми</span>
+                    </div>
+                    
+                    <p class="text-secondary mb-6">Університет Vistula є одним із провідних університетів Польщі, який пропонує передові академічні програми та міжнародні можливості для студентів. Тут ви отримаєте високоякісну освіту, що відповідає вимогам сучасного ринку праці.</p>
+                    
+                    <p class="text-secondary mb-6">Вибір університету — це не тільки про навчання, але й про майбутню кар'єру. Vistula відкриває двері до нових можливостей для студентів з усього світу, надаючи платформу для розвитку в міжнародному середовищі.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-8">
+                        <div class="flex items-center p-4 bg-secondary bg-opacity-5 rounded-lg">
+                            <i class="fas fa-users feature-icon mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold">5,000+</h3>
+                                <p class="text-sm text-secondary">Студентів</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center p-4 bg-primary bg-opacity-5 rounded-lg">
+                            <i class="fas fa-globe feature-icon mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold">90+</h3>
+                                <p class="text-sm text-secondary">Країн</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center p-4 bg-accent bg-opacity-5 rounded-lg">
+                            <i class="fas fa-graduation-cap feature-icon mr-4"></i>
+                            <div>
+                                <h3 class="font-semibold">50+</h3>
+                                <p class="text-sm text-secondary">Програм</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="https://www.vistula.edu.pl" target="_blank" class="btn-primary rounded-lg px-6 py-3 inline-flex items-center">
+                        <i class="fas fa-external-link-alt mr-2"></i>
+                        Офіційний сайт університету
+                    </a>
+                </div>
+                
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <h2 class="text-2xl font-bold mb-6 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-book mr-3 text-primary-color"></i>Навчальні програми
+                    </h2>
+                    
+                    <div class="space-y-6">
+                        <div class="program-card theme-card p-4 hover:border-primary-hover">
+                            <h3 class="text-xl font-semibold mb-2">Бакалаврат</h3>
+                            <p class="text-secondary mb-4">Програми бакалаврату тривають 3-4 роки і пропонують фундаментальні знання у вибраній галузі. Студенти отримують практичний досвід та можливості стажування.</p>
+                            <div class="flex flex-wrap mb-4">
+                                <span class="tag tag-primary">Бізнес</span>
+                                <span class="tag tag-primary">Інформатика</span>
+                                <span class="tag tag-primary">Міжнародні відносини</span>
+                                <span class="tag tag-primary">Графічний дизайн</span>
+                                <span class="tag tag-primary">Журналістика</span>
+                            </div>
+                            <button class="btn-primary rounded-lg px-4 py-2">Дізнатися більше</button>
+                        </div>
+                        
+                        <div class="program-card theme-card p-4 hover:border-secondary-hover">
+                            <h3 class="text-xl font-semibold mb-2">Магістратура</h3>
+                            <p class="text-secondary mb-4">Магістерські програми тривають 1,5-2 роки і пропонують поглиблене вивчення спеціалізованих областей. Програми розроблені у співпраці з провідними компаніями.</p>
+                            <div class="flex flex-wrap mb-4">
+                                <span class="tag tag-secondary">MBA</span>
+                                <span class="tag tag-secondary">Фінанси</span>
+                                <span class="tag tag-secondary">Кібербезпека</span>
+                                <span class="tag tag-secondary">Менеджмент</span>
+                                <span class="tag tag-secondary">Туризм</span>
+                            </div>
+                            <button class="btn-secondary rounded-lg px-4 py-2">Дізнатися більше</button>
+                        </div>
+                        
+                        <div class="program-card theme-card p-4 hover:border-accent-hover">
+                            <h3 class="text-xl font-semibold mb-2">PhD програми</h3>
+                            <p class="text-secondary mb-4">Докторські програми для тих, хто прагне проводити дослідження та зробити внесок у розвиток науки. Програми передбачають індивідуальну роботу з науковим керівником.</p>
+                            <div class="flex flex-wrap mb-4">
+                                <span class="tag tag-accent">Економіка</span>
+                                <span class="tag tag-accent">Менеджмент</span>
+                                <span class="tag tag-accent">Політологія</span>
+                            </div>
+                            <button class="btn-accent rounded-lg px-4 py-2">Дізнатися більше</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w-full md:w-1/3">
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <h2 class="text-xl font-bold mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-award mr-3 text-primary-color"></i>Стипендії та фінансування
+                    </h2>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="p-4 rounded-lg bg-primary bg-opacity-5">
+                            <h3 class="font-semibold">Академічні стипендії</h3>
+                            <p class="text-sm text-secondary mb-2">Знижки до 30% на навчання для студентів з високим середнім балом.</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                <div class="bg-primary h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs mt-1">
+                                <span>Конкурс</span>
+                                <span>75%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 rounded-lg bg-secondary bg-opacity-5">
+                            <h3 class="font-semibold">Стипендії для іноземних студентів</h3>
+                            <p class="text-sm text-secondary mb-2">Спеціальні знижки для іноземних студентів, залежно від країни походження та академічних досягнень.</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                <div class="bg-secondary h-2 rounded-full" style="width: 60%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs mt-1">
+                                <span>Конкурс</span>
+                                <span>60%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 rounded-lg bg-accent bg-opacity-5">
+                            <h3 class="font-semibold">Дослідницькі гранти</h3>
+                            <p class="text-sm text-secondary mb-2">Фінансування для студентів, що беруть участь у дослідницьких проектах університету.</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                                <div class="bg-accent h-2 rounded-full" style="width: 40%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs mt-1">
+                                <span>Конкурс</span>
+                                <span>40%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="https://www.vistula.edu.pl/en/scholarships" target="_blank" class="btn-primary rounded-lg px-4 py-2 w-full flex justify-center items-center">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Дізнатися про стипендії
+                    </a>
+                </div>
+                
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <h2 class="text-xl font-bold mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-calendar-alt mr-3 text-primary-color"></i>Важливі дати
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary-color bg-opacity-10 flex items-center justify-center mr-4">
+                                <i class="fas fa-file-alt text-primary-color"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold">Подача документів</p>
+                                <p class="text-sm text-secondary">15 квітня - 15 липня 2025</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-secondary-color bg-opacity-10 flex items-center justify-center mr-4">
+                                <i class="fas fa-clipboard-check text-secondary-color"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold">Вступні іспити</p>
+                                <p class="text-sm text-secondary">1 червня - 31 липня 2025</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-accent-color bg-opacity-10 flex items-center justify-center mr-4">
+                                <i class="fas fa-check-circle text-accent-color"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold">Оголошення результатів</p>
+                                <p class="text-sm text-secondary">15 серпня 2025</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-primary-color bg-opacity-10 flex items-center justify-center mr-4">
+                                <i class="fas fa-graduation-cap text-primary-color"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold">Початок навчання</p>
+                                <p class="text-sm text-secondary">1 жовтня 2025</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <h2 class="text-xl font-bold mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-comments mr-3 text-primary-color"></i>Зв'язатися з нами
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-primary-color mr-3"></i>
+                            <p>admissions@vistula.edu.pl</p>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-primary-color mr-3"></i>
+                            <p>+48 22 456 98 00</p>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-primary-color mr-3"></i>
+                            <p>ul. Stokłosy 3, 02-787 Warszawa, Польща</p>
+                        </div>
+                        
+                        <div class="flex space-x-4 mt-4">
+                            <a href="#" class="w-10 h-10 rounded-full bg-primary-color flex items-center justify-center text-white hover:bg-primary-hover transition">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-primary-color flex items-center justify-center text-white hover:bg-primary-hover transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-primary-color flex items-center justify-center text-white hover:bg-primary-hover transition">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-primary-color flex items-center justify-center text-white hover:bg-primary-hover transition">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="gradient-bg text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">StudentConnect</h4>
+                    <p class="mb-4">Єдина платформа для комфортного навчання та спілкування студентів.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Посилання</h4>
+                    <ul class="space-y-2">
+                        <li><a href="student2.html" class="hover:underline">Головна</a></li>
+                        <li><a href="student4.html" class="hover:underline">Курси</a></li>
+                        <li><a href="student3.html" class="hover:underline">Події</a></li>
+                        <li><a href="#" class="hover:underline">Повідомлення</a></li>
+                        <li><a href="student1.html" class="hover:underline">Довідка</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Довідковий центр</h4>
+                    <ul class="space-y-2">
+                        <li><a href="education.html" class="hover:underline">Освіта</a></li>
+                        <li><a href="housing.html" class="hover:underline">Житло</a></li>
+                        <li><a href="medical.html" class="hover:underline">Медичне обслуговування</a></li>
+                        <li><a href="employment.html" class="hover:underline">Працевлаштування</a></li>
+                        <li><a href="Error.html" class="hover:underline">Часті запитання</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Контакти</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> вул. Академічна, 1, м. Київ</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +380 44 123 4567</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@studentconnect.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                <p>&copy; 2025 StudentConnect. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Функція для перемикання теми
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Змінити іконку
+            const themeIcon = document.querySelectorAll('.fa-moon, .fa-sun');
+            themeIcon.forEach(icon => {
+                if (newTheme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+            
+            // Зберегти налаштування в localStorage
+            localStorage.setItem('theme', newTheme);
+        }
+        
+        // Перевірка збереженої теми при завантаженні сторінки
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Встановити правильну іконку
+            const themeIcon = document.querySelectorAll('.fa-moon');
+            if (savedTheme === 'dark') {
+                themeIcon.forEach(icon => {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                });
+            }
+        }
+        
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('active');
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            let savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        });
+    </script>
+</body>
+</html>

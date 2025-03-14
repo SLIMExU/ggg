@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Працевлаштування для студентів у Варшаві | StudentConnect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #f9fafb;
+            --text-secondary: #e5e7eb;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --bg-card: #1f2937;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f9fafb;
+            --bg-secondary: #f3f4f6;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+
+        .theme-card {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover {
+            box-shadow: 0 10px 15px var(--shadow-color);
+            transform: translateY(-5px);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 9999px;
+            width: 1.25rem;
+            height: 1.25rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-hover);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Анімації */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .search-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+        }
+
+        .job-card {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .job-card:hover {
+            box-shadow: 0 10px 15px var(--shadow-color);
+            transform: translateY(-5px);
+        }
+
+        .job-card h2 {
+            color: var(--primary-color);
+        }
+
+        .job-card .text-secondary {
+            color: var(--text-secondary);
+        }
+
+        .job-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-link:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(75, 85, 99, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            cursor: pointer;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .faq-answer {
+            padding: 0 1rem 1rem;
+            display: none;
+            color: var(--text-secondary);
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .category-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Стилі для мобільного меню */
+        /* Стилі для мобільного меню */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary);
+    z-index: 100;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow-y: auto;
+    color: var(--text-primary);
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Оновлені стилі для навігаційних елементів у мобільному меню */
+.mobile-menu .nav-item {
+    color: var(--text-primary);
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.mobile-menu .nav-item:hover {
+    background-color: var(--primary-color);
+    opacity: 0.8;
+    color: white;
+}
+
+.mobile-menu .nav-item.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Стилі для інпуту пошуку в мобільному меню */
+.mobile-menu .search-input {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--text-secondary);
+    color: var(--text-primary);
+}
+
+.mobile-menu .search-icon {
+    color: var(--text-secondary);
+}
+
+/* Стиль для кнопки закриття */
+.mobile-menu button {
+    color: var(--text-primary);
+}
+
+.mobile-menu button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    opacity: 0.8;
+}
+    </style>
+</head>
+<body>
+    <nav class="gradient-bg text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="student2.html" class="flex items-center space-x-3">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-2xl font-bold tracking-wider">StudentConnect</h1>
+            </a>
+            <div class="hidden md:flex space-x-1 items-center">
+                <a href="student2.html" class="nav-item">
+                    <i class="fas fa-home mr-2"></i>Головна
+                </a>
+                <a href="student4.html" class="nav-item">
+                    <i class="fas fa-book mr-2"></i>Курси
+                </a>
+                <a href="student3.html" class="nav-item">
+                    <i class="fas fa-calendar-alt mr-2"></i>Події
+                </a>
+                <a href="#" class="nav-item relative">
+                    <i class="fas fa-envelope mr-2"></i>Повідомлення
+                    <span class="badge">3</span>
+                </a>
+                <a href="student1.html" class="nav-item">
+                    <i class="fas fa-question-circle mr-2"></i>Довідка
+                </a>
+                <div class="ml-4 relative">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Пошук..." class="search-input">
+                </div>
+                <button onclick="toggleTheme()" class="p-2 ml-4 rounded-full hover:bg-white/10 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <button class="md:hidden p-2 rounded-lg hover:bg-white/10" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu md:hidden" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-wider">StudentConnect</h1>
+            </div>
+            <button onclick="toggleMobileMenu()" class="p-2 rounded-lg">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-4">
+            <div class="relative mb-4">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Пошук..." class="search-input w-full">
+            </div>
+            <a href="student2.html" class="nav-item">
+                <i class="fas fa-home mr-2"></i>Головна
+            </a>
+            <a href="student4.html" class="nav-item">
+                <i class="fas fa-book mr-2"></i>Курси
+            </a>
+            <a href="student3.html" class="nav-item">
+                <i class="fas fa-calendar-alt mr-2"></i>Події
+            </a>
+            <a href="#" class="nav-item relative">
+                <i class="fas fa-envelope mr-2"></i>Повідомлення
+                <span class="badge">3</span>
+            </a>
+            <a href="student1.html" class="nav-item active">
+                <i class="fas fa-question-circle mr-2"></i>Довідка
+            </a>
+            <div class="mt-4 flex items-center">
+                <span class="mr-2">Тема:</span>
+                <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-white/10 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4 pb-16">
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="w-full md:w-3/4">
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <h2 class="text-2xl font-bold mb-6 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-briefcase mr-3 text-primary-color"></i>Працевлаштування та стажування для студентів у Варшаві
+                    </h2>
+                    <p class="text-lg mb-6">Для студентів у Варшаві є багато можливостей для працевлаштування та стажувань. На цій сторінці ви знайдете корисні ресурси та поради, які допоможуть вам знайти роботу під час навчання.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="job-card fade-in" style="animation-delay: 0.1s;">
+                            <div class="float-animation mb-4">
+                                <i class="fas fa-briefcase text-4xl text-primary-color"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-4">Pracuj.pl</h2>
+                            <p class="text-secondary mb-4">
+                                Pracuj.pl — це один з найбільших порталів для пошуку роботи в Польщі. Тут можна знайти вакансії для студентів, а також стажування у різних галузях.
+                            </p>
+                            <a href="https://www.pracuj.pl/" target="_blank" class="job-link">
+                                <i class="fas fa-external-link-alt mr-2"></i>Перейти на Pracuj.pl
+                            </a>
+                        </div>
+
+                        <div class="job-card fade-in" style="animation-delay: 0.2s;">
+                            <div class="float-animation mb-4">
+                                <i class="fab fa-linkedin text-4xl text-primary-color"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-4">LinkedIn</h2>
+                            <p class="text-secondary mb-4">
+                                LinkedIn — це чудова платформа для створення професійного профілю і пошуку можливостей стажувань чи робіт на неповний робочий день. Використовуйте фільтри для пошуку вакансій у Варшаві.
+                            </p>
+                            <a href="https://www.linkedin.com/" target="_blank" class="job-link">
+                                <i class="fas fa-external-link-alt mr-2"></i>Перейти на LinkedIn
+                            </a>
+                        </div>
+
+                        <div class="job-card fade-in" style="animation-delay: 0.3s;">
+                            <div class="float-animation mb-4">
+                                <i class="fas fa-users text-4xl text-primary-color"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-4">Агенції з працевлаштування</h2>
+                            <p class="text-secondary mb-4">
+                                Агенції з працевлаштування допомагають студентам знайти роботу та стажування в Польщі. Вони часто мають спеціальні програми для іноземних студентів.
+                            </p>
+                            <a href="https://www.adecco.pl/" target="_blank" class="job-link">
+                                <i class="fas fa-external-link-alt mr-2"></i>Adecco
+                            </a>
+                            <a href="https://www.randstad.pl/" target="_blank" class="job-link">
+                                <i class="fas fa-external-link-alt mr-2"></i>Randstad
+                            </a>
+                        </div>
+
+                        <div class="job-card fade-in" style="animation-delay: 0.4s;">
+                            <div class="float-animation mb-4">
+                                <i class="fas fa-globe text-4xl text-primary-color"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-4">Міжнародні компанії</h2>
+                            <p class="text-secondary mb-4">
+                                У Варшаві представлено багато міжнародних компаній, які пропонують програми стажування для студентів. Зверніться безпосередньо на їхні сайти кар'єри.
+                            </p>
+                            <a href="https://www.pracuj.pl/praca/warszawa;wp/dla-studenta;cc,5022" target="_blank" class="job-link">
+                                <i class="fas fa-external-link-alt mr-2"></i>Вакансії для студентів
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <h2 class="text-2xl font-bold mb-6 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-file-contract mr-3 text-primary-color"></i>Юридичні аспекти працевлаштування
+                    </h2>
+                    
+                    <div class="faq-container">
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>Що потрібно для працевлаштування іноземному студенту?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Іноземні студенти з країн, що не входять до ЄС, які навчаються у Польщі в денній формі навчання, можуть працювати без додаткового дозволу на роботу. Для цього вам знадобиться:</p>
+                                <ul class="list-disc pl-5 mt-2 space-y-1">
+                                    <li>Дійсна студентська віза або карта побуту</li>
+                                    <li>Довідка з університету про навчання в денній формі</li>
+                                    <li>Ідентифікаційний номер PESEL (для реєстрації в податковій системі)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>Які обмеження щодо робочого часу для студентів?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Студенти денної форми навчання можуть працювати без обмежень під час канікул (липень-вересень). В навчальний період рекомендується працювати не більше 20 годин на тиждень, щоб це не заважало навчанню. Студенти країн ЄС можуть працювати без обмежень.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>Які типи трудових договорів існують у Польщі?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>У Польщі існує декілька типів трудових договорів:</p>
+                                <ul class="list-disc pl-5 mt-2 space-y-1">
+                                    <li><strong>Umowa o pracę</strong> - стандартний трудовий договір з повним соціальним пакетом</li>
+                                    <li><strong>Umowa zlecenie</strong> - договір-доручення, часто використовується для тимчасової або часткової зайнятості</li>
+                                    <li><strong>Umowa o dzieło</strong> - договір на виконання конкретного завдання</li>
+                                </ul>
+                                <p class="mt-2">Для студентів найчастіше пропонують Umowa zlecenie, який дає більше гнучкості в графіку роботи.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question" onclick="toggleFaq(this)">
+                                <span>Як оподатковується дохід студентів?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p>Студенти до 26 років звільнені від сплати податку на доходи фізичних осіб (PIT) для доходів до 85 528 злотих на рік за умови роботи за трудовим договором або договором-дорученням (Umowa zlecenie). Для старших студентів діє стандартна ставка податку.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <h2 class="text-2xl font-bold mb-6 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-laptop mr-3 text-primary-color"></i>Популярні сфери працевлаштування для студентів
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <i class="fas fa-utensils text-2xl text-primary-color mb-3"></i>
+                            <h3 class="text-xl font-semibold mb-2">Ресторани та кафе</h3>
+                            <p class="text-secondary">Робота офіціантом, барменом або на кухні. Часто пропонують гнучкий графік та миттєву оплату.</p>
+                        </div>
+                        
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <i class="fas fa-store text-2xl text-primary-color mb-3"></i>
+                            <h3 class="text-xl font-semibold mb-2">Роздрібна торгівля</h3>
+                            <p class="text-secondary">Робота продавцем-консультантом у магазинах, особливо в торгових центрах, де часто шукають працівників зі знанням іноземних мов.</p>
+                        </div>
+                        
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <i class="fas fa-language text-2xl text-primary-color mb-3"></i>
+                            <h3 class="text-xl font-semibold mb-2">Переклад та мовні послуги</h3>
+                            <p class="text-secondary">Якщо ви володієте кількома мовами, можна знайти роботу перекладачем або в міжнародних кол-центрах.</p>
+                        </div>
+                        
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <i class="fas fa-code text-2xl text-primary-color mb-3"></i>
+                            <h3 class="text-xl font-semibold mb-2">IT та програмування</h3>
+                            <p class="text-secondary">Студенти технічних спеціальностей можуть знайти стажування або роботу в IT-компаніях чи стартапах.</p>
+                        </div>
+                        
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <i class="fas fa-chalkboard-teacher text-2xl text-primary-color mb-3"></i>
+                            <h3 class="text-xl font-semibold mb-2">Викладання та репетиторство</h3>
+                            <p class="text-secondary">Приватні уроки з іноземних мов, математики та інших предметів завжди мають попит.</p>
+                        </div>
+                        
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <i class="fas fa-clipboard-check text-2xl text-primary-color mb-3"></i>
+                            <h3 class="text-xl font-semibold mb-2">Маркетинг та реклама</h3>
+                            <p class="text-secondary">Робота у сфері соціальних медіа, контент-маркетингу або організації заходів.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <div class="w-full md:w-1/4">
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <h3 class="text-xl font-bold mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-phone-alt mr-2"></i>Контакти підтримки
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="category-label">Центр кар'єри</div>
+                            <p class="font-medium"><i class="fas fa-envelope mr-2 text-primary-color"></i>career@studentconnect.com</p>
+                            <p class="font-medium"><i class="fas fa-phone mr-2 text-primary-color"></i>+48 22 123 4567</p>
+                        </div>
+                        
+                        <div>
+                            <div class="category-label">Юридична консультація</div>
+                            <p class="font-medium"><i class="fas fa-envelope mr-2 text-secondary-color"></i>legal@studentconnect.com</p>
+                            <p class="font-medium"><i class="fas fa-phone mr-2 text-secondary-color"></i>+48 22 123 4568</p>
+                        </div>
+                        
+                        <div>
+                            <div class="category-label">Години роботи</div>
+                            <p>Пн-Пт: 9:00 - 17:00</p>
+                            <p>Сб-Нд: Вихідні</p>
+                        </div>
+                        
+                        <div class="pt-4">
+                            <button class="btn-primary rounded-lg px-4 py-2 w-full mb-2">
+                                <i class="fas fa-comments mr-2"></i>Консультація
+                            </button>
+                            <button class="bg-transparent border border-primary-color text-primary-color rounded-lg px-4 py-2 w-full hover:bg-primary-color hover:text-white transition">
+                                <i class="fas fa-calendar-check mr-2"></i>Запис на прийом
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <h3 class="text-xl font-bold mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-download mr-2"></i>Корисні матеріали
+                    </h3>
+                    
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="Error.html" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-file-pdf mr-3 text-red-500"></i>
+                                <span>Шаблон резюме для студентів</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Error.html" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-file-pdf mr-3 text-red-500"></i>
+                                <span>Гід з проходження співбесід</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Error.html" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-file-alt mr-3 text-blue-500"></i>
+                                <span>Поради для початку кар'єри</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.gov.pl/web/rodzina/podstawowe-informacje-z-zakresu-prawa-pracy" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-file-alt mr-3 text-blue-500"></i>
+                                <span>Права працівників у Польщі</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <h3 class="text-xl font-bold mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-calendar-alt mr-2"></i>Найближчі події
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <p class="text-xs text-gray-500">15 березня 2025</p>
+                            <h4 class="font-semibold">Ярмарок вакансій у Варшавському університеті</h4>
+                        </div>
+                        
+                        <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <p class="text-xs text-gray-500">22 березня 2025</p>
+                            <h4 class="font-semibold">Воркшоп "Як створити ідеальне резюме"</h4>
+                        </div>
+                        
+                        <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <p class="text-xs text-gray-500">5 квітня 2025</p>
+                            <h4 class="font-semibold">Зустріч з роботодавцями IT-сектору</h4>
+                        </div>
+                    </div>
+                    
+                    <a href="student3.html" class="block text-center mt-4 text-primary-color hover:underline">
+                        <i class="fas fa-arrow-right mr-1"></i>Переглянути всі події
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="gradient-bg text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">StudentConnect</h4>
+                    <p class="mb-4">Єдина платформа для комфортного навчання та спілкування студентів.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Посилання</h4>
+                    <ul class="space-y-2">
+                        <li><a href="student2.html" class="hover:underline">Головна</a></li>
+                        <li><a href="student4.html" class="hover:underline">Курси</a></li>
+                        <li><a href="student3.html" class="hover:underline">Події</a></li>
+                        <li><a href="#" class="hover:underline">Повідомлення</a></li>
+                        <li><a href="student1.html" class="hover:underline">Довідка</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Довідковий центр</h4>
+                    <ul class="space-y-2">
+                        <li><a href="education.html" class="hover:underline">Освіта</a></li>
+                        <li><a href="housing.html" class="hover:underline">Житло</a></li>
+                        <li><a href="medical.html" class="hover:underline">Медичне обслуговування</a></li>
+                        <li><a href="employment.html" class="hover:underline">Працевлаштування</a></li>
+                        <li><a href="Error.html" class="hover:underline">Часті запитання</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Контакти</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> вул. Академічна, 1, м. Київ</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +380 44 123 4567</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@studentconnect.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                <p>&copy; 2025 StudentConnect. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Функція для перемикання теми
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Змінити іконку
+            const themeIcon = document.querySelectorAll('.fa-moon, .fa-sun');
+            themeIcon.forEach(icon => {
+                if (newTheme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+            
+            // Зберегти налаштування в localStorage
+            localStorage.setItem('theme', newTheme);
+        }
+        
+        // Перевірка збереженої теми при завантаженні сторінки
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Встановити правильну іконку
+            const themeIcon = document.querySelectorAll('.fa-moon');
+            if (savedTheme === 'dark') {
+                themeIcon.forEach(icon => {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                });
+            }
+        }
+        
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('active');
+        }
+        
+        function toggleFaq(element) {
+            const faqItem = element.parentElement;
+            const allFaqItems = document.querySelectorAll('.faq-item');
+            
+            allFaqItems.forEach(item => {
+                if (item !== faqItem && item.classList.contains('active')) {
+                    item.classList.remove('active');
+                    item.querySelector('.fa-chevron-down').classList.remove('fa-chevron-up');
+                    item.querySelector('.fa-chevron-down').classList.add('fa-chevron-down');
+                }
+            });
+            
+            faqItem.classList.toggle('active');
+            
+            const icon = element.querySelector('i');
+            if (faqItem.classList.contains('active')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+        
+        // Анімація карток при прокрутці
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeElements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(element);
+            });
+        });
+    </script>
+    </body>
+    </html>

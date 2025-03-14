@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оренда житла у Варшаві | StudentConnect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #f9fafb;
+            --text-secondary: #e5e7eb;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --bg-card: #1f2937;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f9fafb;
+            --bg-secondary: #f3f4f6;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+
+        .theme-card {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover {
+            box-shadow: 0 10px 15px var(--shadow-color);
+            transform: translateY(-5px);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 9999px;
+            width: 1.25rem;
+            height: 1.25rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.3s ease;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            transition: all 0.3s ease;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-hover);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+            transition: all 0.3s ease;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Анімації */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .search-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+        }
+
+        .category-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover .resource-icon {
+            transform: scale(1.1);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            cursor: pointer;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .faq-answer {
+            padding: 0 1rem 1rem;
+            display: none;
+            color: var(--text-secondary);
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* Стилі для мобільного меню */
+        /* Стилі для мобільного меню */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary);
+    z-index: 100;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow-y: auto;
+    color: var(--text-primary);
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Оновлені стилі для навігаційних елементів у мобільному меню */
+.mobile-menu .nav-item {
+    color: var(--text-primary);
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.mobile-menu .nav-item:hover {
+    background-color: var(--primary-color);
+    opacity: 0.8;
+    color: white;
+}
+
+.mobile-menu .nav-item.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Стилі для інпуту пошуку в мобільному меню */
+.mobile-menu .search-input {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--text-secondary);
+    color: var(--text-primary);
+}
+
+.mobile-menu .search-icon {
+    color: var(--text-secondary);
+}
+
+/* Стиль для кнопки закриття */
+.mobile-menu button {
+    color: var(--text-primary);
+}
+
+.mobile-menu button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    opacity: 0.8;
+}
+    </style>
+</head>
+<body>
+    <nav class="gradient-bg text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="student2.html" class="flex items-center space-x-3">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-2xl font-bold tracking-wider">StudentConnect</h1>
+            </a>
+            <div class="hidden md:flex space-x-1 items-center">
+                <a href="student2.html" class="nav-item">
+                    <i class="fas fa-home mr-2"></i>Головна
+                </a>
+                <a href="student4.html" class="nav-item">
+                    <i class="fas fa-book mr-2"></i>Курси
+                </a>
+                <a href="student3.html" class="nav-item">
+                    <i class="fas fa-calendar-alt mr-2"></i>Події
+                </a>
+                <a href="#" class="nav-item relative">
+                    <i class="fas fa-envelope mr-2"></i>Повідомлення
+                    <span class="badge">3</span>
+                </a>
+                <a href="student1.html" class="nav-item">
+                    <i class="fas fa-question-circle mr-2"></i>Довідка
+                </a>
+                <div class="ml-4 relative">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Пошук..." class="search-input">
+                </div>
+                <button onclick="toggleTheme()" class="p-2 ml-4 rounded-full hover:bg-white/10 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <button class="md:hidden p-2 rounded-lg hover:bg-white/10" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu md:hidden" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-wider">StudentConnect</h1>
+            </div>
+            <button onclick="toggleMobileMenu()" class="p-2 rounded-lg">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-4">
+            <div class="relative mb-4">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Пошук..." class="search-input w-full">
+            </div>
+            <a href="student2.html" class="nav-item">
+                <i class="fas fa-home mr-2"></i>Головна
+            </a>
+            <a href="student4.html" class="nav-item">
+                <i class="fas fa-book mr-2"></i>Курси
+            </a>
+            <a href="student3.html" class="nav-item">
+                <i class="fas fa-calendar-alt mr-2"></i>Події
+            </a>
+            <a href="#" class="nav-item relative">
+                <i class="fas fa-envelope mr-2"></i>Повідомлення
+                <span class="badge">3</span>
+            </a>
+            <a href="student1.html" class="nav-item active">
+                <i class="fas fa-question-circle mr-2"></i>Довідка
+            </a>
+            <div class="mt-4 flex items-center">
+                <span class="mr-2">Тема:</span>
+                <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-white/10 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4 pb-16">
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="w-full md:w-3/4">
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <h2 class="text-2xl font-bold mb-6 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-home mr-3 text-primary-color"></i>Оренда житла у Варшаві
+                    </h2>
+                    <p class="text-lg mb-6">Знайти комфортне житло - один із ключових аспектів успішного навчання за кордоном. Тут ви знайдете всю необхідну інформацію щодо пошуку та оренди житла у Варшаві.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                        <div class="theme-card p-6">
+                            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                                <i class="fas fa-search-location mr-3 text-primary-color"></i>
+                                Де шукати житло?
+                            </h3>
+                            <p class="text-secondary mb-4">
+                                Орендувати квартиру або кімнату у Варшаві можна на різних платформах. Використовуйте перевірені сервіси для безпечного пошуку житла.
+                            </p>
+                        </div>
+
+                        <div class="theme-card p-6">
+                            <h3 class="text-xl font-semibold mb-4 flex items-center">
+                                <i class="fas fa-map-marked-alt mr-3 text-secondary-color"></i>
+                                Популярні райони
+                            </h3>
+                            <p class="text-secondary mb-4">
+                                Для студентів найзручнішими районами є Мокотув, Охота, Воля та Прага. Ці райони мають хороше транспортне сполучення з університетами.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold mb-4 border-b pb-2 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-list-alt mr-3 text-accent-color"></i>Популярні сервіси пошуку житла
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                        <div class="theme-card p-6 text-center">
+                            <div class="flex justify-center mb-4">
+                                <i class="fas fa-list-alt resource-icon"></i>
+                            </div>
+                            <h4 class="font-semibold text-xl mb-2">OLX</h4>
+                            <p class="text-secondary mb-4">Найпопулярніший сайт оголошень у Польщі з великою кількістю пропозицій від власників та агентств.</p>
+                            <a href="https://www.olx.pl/nieruchomosci/mieszkania/wynajem/warszawa/" target="_blank" class="btn-primary w-full">
+                                <i class="fas fa-external-link-alt mr-2"></i>Перейти на OLX
+                            </a>
+                        </div>
+                        
+                        <div class="theme-card p-6 text-center">
+                            <div class="flex justify-center mb-4">
+                                <i class="fas fa-home resource-icon"></i>
+                            </div>
+                            <h4 class="font-semibold text-xl mb-2">Otodom</h4>
+                            <p class="text-secondary mb-4">Спеціалізований сайт нерухомості з професійними оголошеннями та детальними описами.</p>
+                            <a href="https://www.otodom.pl/pl/wynajem/mieszkanie/warszawa" target="_blank" class="btn-secondary w-full">
+                                <i class="fas fa-external-link-alt mr-2"></i>Перейти на Otodom
+                            </a>
+                        </div>
+                        
+                        <div class="theme-card p-6 text-center">
+                            <div class="flex justify-center mb-4">
+                                <i class="fab fa-facebook resource-icon"></i>
+                            </div>
+                            <h4 class="font-semibold text-xl mb-2">Facebook-групи</h4>
+                            <p class="text-secondary mb-4">Спільноти для студентів та мігрантів з актуальними пропозиціями житла без посередників.</p>
+                            <a href="https://www.facebook.com/groups/1530064817252367/" target="_blank" class="btn-accent w-full">
+                                <i class="fas fa-users mr-2"></i>Facebook-група
+                            </a>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold mb-4 border-b pb-2 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-building mr-3 text-primary-color"></i>Агентства нерухомості
+                    </h3>
+                    
+                    <div class="theme-card p-6 mb-8">
+                        <p class="text-secondary mb-4">
+                            Якщо ви шукаєте квартиру на довгий термін і хочете уникнути ризиків, варто звернутися до агентств нерухомості. Вони допоможуть вам знайти житло відповідно до ваших потреб та бюджету.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <a href="https://metrohouse.pl/" target="_blank" class="btn-primary text-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>Metrohouse
+                            </a>
+                            <a href="https://www.remax-polska.pl/" target="_blank" class="btn-primary text-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>RE/MAX
+                            </a>
+                            <a href="https://www.emmerson.pl/" target="_blank" class="btn-primary text-center">
+                                <i class="fas fa-external-link-alt mr-2"></i>Emmerson
+                            </a>
+                        </div>
+                    </div>
+
+                    <section class="theme-card p-6 mb-8">
+                        <h3 class="text-xl font-bold mb-6 border-b pb-2 border-gray-200 dark:border-gray-700">
+                            <i class="fas fa-question-circle mr-3 text-secondary-color"></i>Часті запитання про оренду
+                        </h3>
+                        
+                        <div class="faq-container">
+                            <div class="faq-item">
+                                <div class="faq-question" onclick="toggleFaq(this)">
+                                    <span>Скільки коштує оренда житла у Варшаві?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Ціни на оренду залежать від розташування, стану та розміру житла. В середньому, однокімнатна квартира коштує 1800-2500 злотих на місяць, двокімнатна - 2500-3500 злотих. Орендна плата за кімнату в квартирі з кількома кімнатами становить приблизно 800-1200 злотих на місяць.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question" onclick="toggleFaq(this)">
+                                    <span>Які документи потрібні для оренди житла?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Для оренди житла у Варшаві зазвичай потрібні: паспорт, віза або карта перебування, підтвердження зарахування до університету або працевлаштування, іноді також можуть попросити виписку з банківського рахунку для підтвердження платоспроможності.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question" onclick="toggleFaq(this)">
+                                    <span>Чи включені комунальні послуги в орендну плату?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>У більшості випадків комунальні послуги не включені в орендну плату. Зазвичай додатково оплачуються: електроенергія, газ, вода, опалення, інтернет. Середня вартість комунальних послуг для однокімнатної квартири становить близько 300-500 злотих на місяць залежно від сезону.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question" onclick="toggleFaq(this)">
+                                    <span>Який розмір застави при оренді?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Стандартною практикою є внесення застави (kaucja) у розмірі місячної або двомісячної орендної плати. Застава повертається після закінчення договору оренди, якщо немає пошкоджень майна або заборгованості з оплати.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item">
+                                <div class="faq-question" onclick="toggleFaq(this)">
+                                    <span>На який термін зазвичай укладають договір оренди?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Типові договори оренди укладаються на 12 місяців. Для студентів іноді можливо укласти договір на навчальний рік (9-10 місяців). При короткостроковій оренді (менше 6 місяців) ціни зазвичай вищі.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-info-circle mr-3 text-accent-color"></i>
+                        Корисні поради для пошуку житла
+                    </h2>
+                    <ul class="space-y-3 text-secondary">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-secondary-color"></i>
+                            <span>Почніть шукати житло заздалегідь, особливо перед початком навчального року, коли попит найвищий.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-secondary-color"></i>
+                            <span>Перевіряйте відстань до університету та транспортне сполучення. Варто шукати житло поблизу станцій метро або трамвайних ліній.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-secondary-color"></i>
+                            <span>Завжди підписуйте офіційний договір оренди (umowa najmu) для вашого юридичного захисту.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-secondary-color"></i>
+                            <span>Детально вивчіть умови договору перед підписанням, особливо щодо термінів повідомлення про розірвання та повернення застави.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-secondary-color"></i>
+                            <span>Зверніть увагу на додаткові платежі: комунальні послуги, інтернет, плату за прибирання спільних приміщень (czynsz administracyjny).</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-secondary-color"></i>
+                            <span>При огляді житла фотографуйте наявні пошкодження для уникнення суперечок при виїзді.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-3 text-secondary-color"></i>
+                            <span>Розгляньте можливість спільної оренди з іншими студентами для економії коштів.</span>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+            
+            <div class="w-full md:w-1/4">
+                <div class="theme-card p-6 mb-6 top-24 fade-in">
+                    <h3 class="text-xl font-bold mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-phone-alt mr-2"></i>Контакти підтримки
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="category-label">Консультації з житла</div>
+                            <p class="font-medium"><i class="fas fa-envelope mr-2 text-primary-color"></i>housing@studentconnect.com</p>
+                            <p class="font-medium"><i class="fas fa-phone mr-2 text-primary-color"></i>+48 22 123 4567</p>
+                        </div>
+                        
+                        <div>
+                            <div class="category-label">Юридична підтримка</div>
+                            <p class="font-medium"><i class="fas fa-balance-scale mr-2 text-secondary-color"></i>legal@studentconnect.com</p>
+                            <p class="font-medium"><i class="fas fa-phone mr-2 text-secondary-color"></i>+48 22 123 4568</p>
+                        </div>
+                        
+                        <div>
+                            <div class="category-label">Години роботи</div>
+                            <p>Пн-Пт: 9:00 - 18:00</p>
+                            <p>Сб: 10:00 - 15:00</p>
+                            <p>Нд: Вихідний</p>
+                        </div>
+                        
+                        <div class="pt-4">
+                            <button class="btn-primary rounded-lg px-4 py-2 w-full mb-2">
+                                <i class="fas fa-comments mr-2"></i>Почати чат
+                            </button>
+                            <button class="bg-transparent border border-primary-color text-primary-color rounded-lg px-4 py-2 w-full hover:bg-primary-color hover:text-white transition">
+                                <i class="fas fa-file-alt mr-2"></i>Створити запит
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <h3 class="text-xl font-bold mb-4">
+                        <i class="fas fa-download mr-2"></i>Корисні матеріали
+                    </h3>
+                    
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="Error.html" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-file-pdf mr-3 text-red-500"></i>
+                                <span>Зразок договору оренди</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Error.html" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-file-pdf mr-3 text-red-500"></i>
+                                <span>Путівник по районах Варшави</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Error.html" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-file-alt mr-3 text-blue-500"></i>
+                                <span>Права орендарів у Польщі</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="Error.html" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-map-marked-alt mr-3 text-green-500"></i>
+                                <span>Карта транспорту Варшави</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="theme-card p-6 mb-6 fade-in">
+                    <h3 class="text-xl font-bold mb-4">
+                        <i class="fas fa-lightbulb mr-2 text-accent-color"></i>Швидкі порівняння
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="font-medium mb-2">Середні ціни оренди (злотих/міс)</div>
+                            <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                                <div class="flex justify-between items-center">
+                                    <span>Кімната в квартирі</span>
+                                    <span class="font-bold">800-1200</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span>Однокімнатна квартира</span>
+                                    <span class="font-bold">1800-2500</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span>Двокімнатна квартира</span>
+                                    <span class="font-bold">2500-3500</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="font-medium mb-2">Час до центру міста</div>
+                            <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
+                                <div class="flex justify-between items-center">
+                                    <span>Мокотув</span>
+                                    <span class="font-bold">15-20 хв</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span>Охота</span>
+                                    <span class="font-bold">10-15 хв</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span>Воля</span>
+                                    <span class="font-bold">15-25 хв</span>
+                                </div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span>Прага</span>
+                                    <span class="font-bold">20-30 хв</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <footer class="gradient-bg text-white py-10">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">StudentConnect</h4>
+                        <p class="mb-4">Єдина платформа для комфортного навчання та спілкування студентів.</p>
+                        <div class="flex space-x-3">
+                            <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                                <i class="fab fa-telegram"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Посилання</h4>
+                        <ul class="space-y-2">
+                            <li><a href="student2.html" class="hover:underline">Головна</a></li>
+                            <li><a href="student4.html" class="hover:underline">Курси</a></li>
+                            <li><a href="student3.html" class="hover:underline">Події</a></li>
+                            <li><a href="#" class="hover:underline">Повідомлення</a></li>
+                            <li><a href="student1.html" class="hover:underline">Довідка</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Довідковий центр</h4>
+                        <ul class="space-y-2">
+                            <li><a href="education.html" class="hover:underline">Освіта</a></li>
+                            <li><a href="housing.html" class="hover:underline">Житло</a></li>
+                            <li><a href="medical.html" class="hover:underline">Медичне обслуговування</a></li>
+                            <li><a href="employment.html" class="hover:underline">Працевлаштування</a></li>
+                            <li><a href="Error.html" class="hover:underline">Часті запитання</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Контакти</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> вул. Академічна, 1, м. Київ</li>
+                            <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +380 44 123 4567</li>
+                            <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@studentconnect.com</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                    <p>&copy; 2025 StudentConnect. Всі права захищені.</p>
+                </div>
+            </div>
+        </footer>
+    
+        <script>
+            // Функція для перемикання теми
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Змінити іконку
+            const themeIcon = document.querySelectorAll('.fa-moon, .fa-sun');
+            themeIcon.forEach(icon => {
+                if (newTheme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+            
+            // Зберегти налаштування в localStorage
+            localStorage.setItem('theme', newTheme);
+        }
+        
+        // Перевірка збереженої теми при завантаженні сторінки
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Встановити правильну іконку
+            const themeIcon = document.querySelectorAll('.fa-moon');
+            if (savedTheme === 'dark') {
+                themeIcon.forEach(icon => {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                });
+            }
+        }
+        
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('active');
+        }
+    
+            // Функція для розгортання/згортання FAQ
+            function toggleFaq(element) {
+                const faqItem = element.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Закриваємо всі активні елементи
+                document.querySelectorAll('.faq-item.active').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+                });
+                
+                // Якщо елемент не був активним, робимо його активним
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                    element.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
+                }
+            }
+    
+            // Застосовуємо збережену тему при завантаженні
+            document.addEventListener('DOMContentLoaded', function() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    document.body.setAttribute('data-theme', savedTheme);
+                    
+                    // Оновлюємо іконку
+                    const themeIcon = document.querySelector('button[onclick="toggleTheme()"] i');
+                    if (savedTheme === 'dark') {
+                        themeIcon.classList.remove('fa-moon');
+                        themeIcon.classList.add('fa-sun');
+                    }
+                }
+            });
+        </script>
+    </body>
+    </html>

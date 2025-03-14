@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помилка | StudentConnect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #f9fafb;
+            --text-secondary: #e5e7eb;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --bg-card: #1f2937;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f9fafb;
+            --bg-secondary: #f3f4f6;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+
+        .theme-card {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover {
+            box-shadow: 0 10px 15px var(--shadow-color);
+            transform: translateY(-5px);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 9999px;
+            width: 1.25rem;
+            height: 1.25rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-hover);
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 700;
+            line-height: 1;
+            opacity: 0.8;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Анімації */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .search-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+        }
+
+        /* Стилі для мобільного меню */
+        /* Стилі для мобільного меню */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary);
+    z-index: 100;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow-y: auto;
+    color: var(--text-primary);
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Оновлені стилі для навігаційних елементів у мобільному меню */
+.mobile-menu .nav-item {
+    color: var(--text-primary);
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.mobile-menu .nav-item:hover {
+    background-color: var(--primary-color);
+    opacity: 0.8;
+    color: white;
+}
+
+.mobile-menu .nav-item.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Стилі для інпуту пошуку в мобільному меню */
+.mobile-menu .search-input {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--text-secondary);
+    color: var(--text-primary);
+}
+
+.mobile-menu .search-icon {
+    color: var(--text-secondary);
+}
+
+/* Стиль для кнопки закриття */
+.mobile-menu button {
+    color: var(--text-primary);
+}
+
+.mobile-menu button:hover {
+    background-color: var(--primary-color);
+    color: white;
+    opacity: 0.8;
+}
+    </style>
+</head>
+<body>
+    <nav class="gradient-bg text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="student2.html" class="flex items-center space-x-3">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-2xl font-bold tracking-wider">StudentConnect</h1>
+            </a>
+            <div class="hidden md:flex space-x-1 items-center">
+                <a href="student2.html" class="nav-item active">
+                    <i class="fas fa-home mr-2"></i>Головна
+                </a>
+                <a href="student4.html" class="nav-item">
+                    <i class="fas fa-book mr-2"></i>Курси
+                </a>
+                <a href="student3.html" class="nav-item">
+                    <i class="fas fa-calendar-alt mr-2"></i>Події
+                </a>
+                <a href="#" class="nav-item relative">
+                    <i class="fas fa-envelope mr-2"></i>Повідомлення
+                    <span class="badge">3</span>
+                </a>
+                <a href="student1.html" class="nav-item">
+                    <i class="fas fa-question-circle mr-2"></i>Довідка
+                </a>
+                <div class="ml-4 relative">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Пошук..." class="search-input">
+                </div>
+                <button onclick="toggleTheme()" class="p-2 ml-4 rounded-full hover:bg-white/10 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <button class="md:hidden p-2 rounded-lg hover:bg-white/10" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-menu md:hidden" id="mobile-menu">
+        <div class="mobile-menu-header">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-xl font-bold tracking-wider">StudentConnect</h1>
+            </div>
+            <button onclick="toggleMobileMenu()" class="p-2 rounded-lg">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-4">
+            <div class="relative mb-4">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="Пошук..." class="search-input w-full">
+            </div>
+            <a href="student2.html" class="nav-item active">
+                <i class="fas fa-home mr-2"></i>Головна
+            </a>
+            <a href="student4.html" class="nav-item">
+                <i class="fas fa-book mr-2"></i>Курси
+            </a>
+            <a href="student3.html" class="nav-item">
+                <i class="fas fa-calendar-alt mr-2"></i>Події
+            </a>
+            <a href="#" class="nav-item relative">
+                <i class="fas fa-envelope mr-2"></i>Повідомлення
+                <span class="badge">3</span>
+            </a>
+            <a href="student1.html" class="nav-item">
+                <i class="fas fa-question-circle mr-2"></i>Довідка
+            </a>
+            <div class="mt-4 flex items-center">
+                <span class="mr-2">Тема:</span>
+                <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-white/10 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4 pb-16">
+        <div class="flex flex-col items-center justify-center min-h-[70vh]">
+            <div class="theme-card p-8 w-full max-w-2xl text-center fade-in">
+                <div class="float-animation mb-6">
+                    <i class="fas fa-exclamation-triangle text-6xl text-accent-color"></i>
+                </div>
+                <h1 class="error-code mb-4">404</h1>
+                <h2 class="text-3xl font-bold mb-4">Сторінку не знайдено</h2>
+                <p class="text-lg mb-8 text-secondary">На жаль, сторінка, яку ви шукаєте, не існує або була переміщена.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <a href="student2.html" class="btn-primary rounded-lg px-6 py-3 flex items-center justify-center">
+                        <i class="fas fa-home mr-2"></i>На головну
+                    </a>
+                    <a href="student1.html" class="btn-secondary rounded-lg px-6 py-3 flex items-center justify-center">
+                        <i class="fas fa-question-circle mr-2"></i>Центр підтримки
+                    </a>
+                </div>
+                
+                <div class="theme-card p-4 mt-6">
+                    <h3 class="font-semibold mb-2">Можливо, вам будуть корисні:</h3>
+                    <ul class="space-y-2 text-left">
+                        <li>
+                            <a href="student4.html" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-book-open mr-3 text-primary-color"></i>
+                                <span>Каталог курсів</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="student3.html" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-calendar-day mr-3 text-secondary-color"></i>
+                                <span>Розклад подій</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <i class="fas fa-map-marked-alt mr-3 text-accent-color"></i>
+                                <span>Карта кампусу</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="gradient-bg text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-xl font-bold mb-4">StudentConnect</h4>
+                    <p class="mb-4">Єдина платформа для комфортного навчання та спілкування студентів.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="p-2 rounded-full hover:bg-white/10 transition">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Посилання</h4>
+                    <ul class="space-y-2">
+                        <li><a href="student2.html" class="hover:underline">Головна</a></li>
+                        <li><a href="student4.html" class="hover:underline">Курси</a></li>
+                        <li><a href="student3.html" class="hover:underline">Події</a></li>
+                        <li><a href="#" class="hover:underline">Повідомлення</a></li>
+                        <li><a href="student1.html" class="hover:underline">Довідка</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Довідковий центр</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:underline">Освіта</a></li>
+                        <li><a href="#" class="hover:underline">Житло</a></li>
+                        <li><a href="#" class="hover:underline">Медичне обслуговування</a></li>
+                        <li><a href="#" class="hover:underline">Працевлаштування</a></li>
+                        <li><a href="#" class="hover:underline">Часті запитання</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Контакти</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> вул. Академічна, 1, м. Київ</li>
+                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i> +380 44 123 4567</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@studentconnect.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                <p>&copy; 2025 StudentConnect. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+         // Функція для перемикання теми
+         function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Змінити іконку
+            const themeIcon = document.querySelectorAll('.fa-moon, .fa-sun');
+            themeIcon.forEach(icon => {
+                if (newTheme === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            });
+            
+            // Зберегти налаштування в localStorage
+            localStorage.setItem('theme', newTheme);
+        }
+        
+        // Перевірка збереженої теми при завантаженні сторінки
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Встановити правильну іконку
+            const themeIcon = document.querySelectorAll('.fa-moon');
+            if (savedTheme === 'dark') {
+                themeIcon.forEach(icon => {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                });
+            }
+        }
+        
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('active');
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            let savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        });
+    </script>
+</body>
+</html>
