@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Головна сторінка | StudentConnect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #10b981;
+            --secondary-hover: #059669;
+            --accent-color: #f59e0b;
+            --accent-hover: #d97706;
+            --text-primary: #f9fafb;
+            --text-secondary: #e5e7eb;
+            --bg-primary: #111827;
+            --bg-secondary: #1f2937;
+            --bg-card: #1f2937;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f9fafb;
+            --bg-secondary: #f3f4f6;
+            --bg-card: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+        }
+
+        .theme-card {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover {
+            box-shadow: 0 10px 15px var(--shadow-color);
+            transform: translateY(-5px);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .nav-item {
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 9999px;
+            width: 1.25rem;
+            height: 1.25rem;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+        }
+
+        .category-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-hover);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .resource-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .theme-card:hover .resource-icon {
+            transform: scale(1.1);
+        }
+
+        /* Анімації */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Стилі для курсових карток */
+        .course-card {
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e5e7eb;
+            overflow: hidden;
+        }
+
+        .progress-value {
+            height: 100%;
+            border-radius: 4px;
+            background-color: var(--primary-color);
+        }
+
+        /* Стилі для новин і подій */
+        .event-date {
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 0.5rem;
+            font-weight: bold;
+        }
+
+        /* Стилі для статистики */
+        .stat-item {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Мобільне меню */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-primary);
+            z-index: 100;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+        
+        /* Стилі для календаря */
+        .calendar-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        
+        .calendar-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .calendar-container {
+            width: 90%;
+            max-width: 800px;
+            background-color: var(--bg-card);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .calendar-modal.open .calendar-container {
+            transform: translateY(0);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .calendar-day:hover {
+            background-color: rgba(79, 70, 229, 0.1);
+        }
+        
+        .calendar-day.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .calendar-day.has-event::after {
+            content: "";
+            position: absolute;
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+        }
+        
+        .calendar-day.active.has-event::after {
+            background-color: white;
+        }
+        
+        .day-label {
+            font-weight: 600;
+            text-align: center;
+            padding: 0.5rem 0;
+        }
+        
+        .event-list {
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--bg-secondary);
+            padding-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="gradient-bg text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="student2.html" class="flex items-center space-x-3">
+                <i class="fas fa-graduation-cap text-2xl"></i>
+                <h1 class="text-2xl font-bold tracking-wider">StudentConnect</h1>
+            </a>
+            <div class="hidden md:flex space-x-1 items-center">
+                <a href="student2.html" class="nav-item active">
+                    <i class="fas fa-home mr-2"></i>Головна
+                </a>
+                <a href="student4.html" class="nav-item">
+                    <i class="fas fa-book mr-2"></i>Курси
+                </a>
+                <a href="student3.html" class="nav-item">
+                    <i class="fas fa-calendar-alt mr-2"></i>Події
+                </a>
+                <a href="#" class="nav-item relative">
+                    <i class="fas fa-envelope mr-2"></i>Повідомлення
+                    <span class="badge">3</span>
+                </a>
+                <a href="student1.html" class="nav-item">
+                    <i class="fas fa-question-circle mr-2"></i>Довідка
+                </a>
+                <div class="ml-4 relative">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Пошук..." class="search-input">
+                </div>
+                <button onclick="toggleTheme()" class="p-2 ml-4 rounded-full hover:bg-white/10 transition">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Мобільне меню -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-6">
+                <a href="student2.html" class="flex items-center space-x-3">
+                    <i class="fas fa-graduation-cap text-2xl text-primary-color"></i>
+                    <h1 class="text-2xl font-bold tracking-wider">StudentConnect</h1>
+                </a>
+                <button id="closeMenuBtn" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-2">
+                <a href="student2.html" class="flex items-center p-3 rounded-lg bg-primary-color text-white">
+                    <i class="fas fa-home w-8"></i>Головна
+                </a>
+                <a href="student4.html" class="flex items-center p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <i class="fas fa-book w-8"></i>Курси
+                </a>
+                <a href="student3.html" class="flex items-center p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <i class="fas fa-calendar-alt w-8"></i>Події
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 relative">
+                    <i class="fas fa-envelope w-8"></i>Повідомлення
+                    <span class="absolute right-4 top-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+                </a>
+                <a href="student1.html" class="flex items-center p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <i class="fas fa-question-circle w-8"></i>Довідка
+                </a>
+            </div>
+            
+            <div class="mt-6 relative">
+                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"></i>
+                <input type="text" placeholder="Пошук..." class="w-full bg-gray-100 dark:bg-gray-700 border-0 rounded-full py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary-color">
+            </div>
+            
+            <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <button onclick="toggleTheme()" class="flex items-center p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 w-full">
+                    <i class="fas fa-moon w-8"></i>Змінити тему
+                </button>
+                <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 mt-2">
+                    <i class="fas fa-cog w-8"></i>Налаштування
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 mt-2">
+                    <i class="fas fa-sign-out-alt w-8"></i>Вийти
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto p-4 pb-16">
+        <!-- Привітання і швидкий доступ -->
+        <section class="theme-card p-6 mb-8 fade-in">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">Вітаємо!</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Сьогодні четвер, 6 березня 2025. У вас 2 заняття і 1 дедлайн.</p>
+                </div>
+                <div class="mt-4 md:mt-0 flex space-x-2">
+                    <button class="btn-primary rounded-lg px-4 py-2">
+                        <i class="fas fa-tasks mr-2"></i>Мої завдання
+                    </button>
+                    <button id="calendarBtn" class="bg-transparent border border-primary-color text-primary-color rounded-lg px-4 py-2 hover:bg-primary-color hover:text-white transition">
+                        <i class="fas fa-calendar-plus mr-2"></i>Календар
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg border-l-4 border-blue-500">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold">Наступне заняття</h3>
+                        <span class="text-blue-500 dark:text-blue-400 text-sm">09:30</span>
+                    </div>
+                    <p class="font-bold mt-2">Вища математика</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Ауд. 305, Корпус А</p>
+                </div>
+                
+                <div class="bg-red-50 dark:bg-red-900/30 p-4 rounded-lg border-l-4 border-red-500">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold">Дедлайн</h3>
+                        <span class="text-red-500 dark:text-red-400 text-sm">Сьогодні</span>
+                    </div>
+                    <p class="font-bold mt-2">Лабораторна робота №3</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Програмування, доц. Петренко</p>
+                </div>
+                
+                <div class="bg-green-50 dark:bg-green-900/30 p-4 rounded-lg border-l-4 border-green-500">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold">Нове повідомлення</h3>
+                        <span class="text-green-500 dark:text-green-400 text-sm">10:15</span>
+                    </div>
+                    <p class="font-bold mt-2">Від: Декан факультету</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Щодо розкладу сесії...</p>
+                </div>
+                
+                <div class="bg-purple-50 dark:bg-purple-900/30 p-4 rounded-lg border-l-4 border-purple-500">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold">Нагадування</h3>
+                        <span class="text-purple-500 dark:text-purple-400 text-sm">Завтра</span>
+                    </div>
+                    <p class="font-bold mt-2">Збори студентської ради</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">15:00, Зал засідань</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Модальне вікно календаря -->
+        <div id="calendarModal" class="calendar-modal">
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <h2 class="text-2xl font-bold">Календар</h2>
+                    <div class="flex items-center space-x-2">
+                        <button id="prevMonth" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h3 id="currentMonth" class="text-lg font-semibold px-2">Березень 2025</h3>
+                        <button id="nextMonth" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <button id="closeCalendarBtn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="calendar-days">
+                    <div class="calendar-grid">
+                        <div class="day-label">Пн</div>
+                        <div class="day-label">Вт</div>
+                        <div class="day-label">Ср</div>
+                        <div class="day-label">Чт</div>
+                        <div class="day-label">Пт</div>
+                        <div class="day-label">Сб</div>
+                        <div class="day-label">Нд</div>
+                    </div>
+                    
+                    <div id="calendarGrid" class="calendar-grid">
+                        <!-- Дні календаря будуть додані через JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="event-list">
+                    <h3 class="text-xl font-bold mb-4" id="selectedDate">Події на 6 березня 2025</h3>
+                    <div id="eventsList">
+                        <div class="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg border-l-4 border-blue-500">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-semibold">Вища математика</h4>
+                                <span class="text-blue-500 dark:text-blue-400 text-sm">09:30 - 11:05</span>
+                            </div>
+                            <p class="text-sm">Ауд. 305, Корпус А</p>
+                            <p class="text-sm text-gray-500 mt-1">Лекція</p>
+                        </div>
+                        
+                        <div class="mb-4 p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg border-l-4 border-indigo-500">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-semibold">Програмування</h4>
+                                <span class="text-indigo-500 dark:text-indigo-400 text-sm">11:30 - 13:05</span>
+                            </div>
+                            <p class="text-sm">Ауд. 215, Корпус Б</p>
+                            <p class="text-sm text-gray-500 mt-1">Лабораторна робота</p>
+                        </div>
+                        
+                        <div class="mb-4 p-3 bg-red-50 dark:bg-red-900/30 rounded-lg border-l-4 border-red-500">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-semibold">Дедлайн: Лабораторна робота №3</h4>
+                                <span class="text-red-500 dark:text-red-400 text-sm">23:59</span>
+                            </div>
+                            <p class="text-sm">Програмування, доц. Петренко</p>
+                            <div class="mt-2 flex justify-between">
+                                <span class="text-sm text-red-500">Залишилось: 13 годин</span>
+                                <a href="#" class="text-primary-color text-sm hover:underline">Завантажити</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-between">
+                        <button class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                            <i class="fas fa-print mr-2"></i>Друк
+                        </button>
+                        <button class="px-4 py-2 bg-primary-color text-white rounded-lg hover:bg-primary-hover transition">
+                            <i class="fas fa-plus mr-2"></i>Нова подія
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Курси та прогрес -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div class="w-full lg:w-2/3">
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+                        <h2 class="text-2xl font-bold">
+                            <i class="fas fa-book mr-3 text-primary-color"></i>Мої курси
+                        </h2>
+                        <a href="student4.html" class="text-primary-color hover:underline flex items-center">
+                            Всі курси <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="theme-card p-4">
+                            <div class="flex justify-between mb-3">
+                                <h3 class="font-bold text-lg">Програмування</h3>
+                                <span class="text-sm text-white bg-primary-color px-2 py-1 rounded-full">У процесі</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">доц. Петренко Т.М.</p>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Прогрес</span>
+                                    <span>68%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value" style="width: 68%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">Останнє оновлення: вчора</span>
+                                <a href="Error.html" class="text-primary-color text-sm hover:underline">Відкрити</a>
+                            </div>
+                        </div>
+                        
+                        <div class="theme-card p-4">
+                            <div class="flex justify-between mb-3">
+                                <h3 class="font-bold text-lg">Вища математика</h3>
+                                <span class="text-sm text-white bg-primary-color px-2 py-1 rounded-full">У процесі</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">проф. Коваленко М.І.</p>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Прогрес</span>
+                                    <span>42%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value" style="width: 42%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">Останнє оновлення: сьогодні</span>
+                                <a href="Error.html" class="text-primary-color text-sm hover:underline">Відкрити</a>
+                            </div>
+                        </div>
+                        
+                        <div class="theme-card p-4">
+                            <div class="flex justify-between mb-3">
+                                <h3 class="font-bold text-lg">Англійська мова</h3>
+                                <span class="text-sm text-white bg-secondary-color px-2 py-1 rounded-full">Активний</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">доц. Іванова О.В.</p>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Прогрес</span>
+                                    <span>55%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value" style="width: 55%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">Останнє оновлення: 2 дні тому</span>
+                                <a href="Error.html" class="text-primary-color text-sm hover:underline">Відкрити</a>
+                            </div>
+                        </div>
+                        
+                        <div class="theme-card p-4">
+                            <div class="flex justify-between mb-3">
+                                <h3 class="font-bold text-lg">Фізика</h3>
+                                <span class="text-sm text-white bg-accent-color px-2 py-1 rounded-full">Новий</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">проф. Сидоренко В.П.</p>
+                            <div class="mb-3">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>Прогрес</span>
+                                    <span>15%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value" style="width: 15%"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-500">Останнє оновлення: 3 дні тому</span>
+                                <a href="Error.html" class="text-primary-color text-sm hover:underline">Відкрити</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Активні завдання -->
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+                        <h2 class="text-2xl font-bold">
+                            <i class="fas fa-tasks mr-3 text-primary-color"></i>Активні завдання
+                        </h2>
+                        <a href="#" class="text-primary-color hover:underline flex items-center">
+                            Всі завдання <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 border border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-900 rounded-lg">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg">Лабораторна робота №3</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Програмування, доц. Петренко</p>
+                                </div>
+                                <span class="text-sm text-white bg-red-500 px-2 py-1 rounded-full">Сьогодні</span>
+                            </div>
+                            <div class="flex justify-between mt-4 items-center">
+                                <span class="text-sm text-red-600 dark:text-red-400">Залишилось: 13 годин</span>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-sm text-primary-color hover:underline">Деталі</a>
+                                    <a href="#" class="text-sm text-primary-color hover:underline">Завантажити</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 border border-orange-300 bg-orange-50 dark:bg-orange-900/20 dark:border-orange-900 rounded-lg">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg">Індивідуальне завдання</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Вища математика, проф. Коваленко</p>
+                                </div>
+                                <span class="text-sm text-white bg-orange-500 px-2 py-1 rounded-full">За 3 дні</span>
+                            </div>
+                            <div class="flex justify-between mt-4 items-center">
+                                <span class="text-sm text-orange-600 dark:text-orange-400">Залишилось: 3 дні, 10 годин</span>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-sm text-primary-color hover:underline">Деталі</a>
+                                    <a href="#" class="text-sm text-primary-color hover:underline">Завантажити</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 border border-blue-300 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-900 rounded-lg">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg">Презентація проекту</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Англійська мова, доц. Іванова</p>
+                                </div>
+                                <span class="text-sm text-white bg-blue-500 px-2 py-1 rounded-full">За тиждень</span>
+                            </div>
+                            <div class="flex justify-between mt-4 items-center">
+                                <span class="text-sm text-blue-600 dark:text-blue-400">Залишилось: 7 днів</span>
+                                <div class="flex space-x-2">
+                                    <a href="#" class="text-sm text-primary-color hover:underline">Деталі</a>
+                                    <a href="#" class="text-sm text-primary-color hover:underline">Завантажити</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Права колонка з новинами та подіями -->
+            <div class="w-full lg:w-1/3">
+                <!-- Новини та анонси -->
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+                        <h2 class="text-xl font-bold">
+                            <i class="fas fa-newspaper mr-3 text-primary-color"></i>Новини та анонси
+                        </h2>
+                        <a href="#" class="text-primary-color hover:underline flex items-center text-sm">
+                            Всі новини
+                        </a>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="flex space-x-4">
+                            <div class="event-date">
+                                <span class="text-xs">БЕР</span>
+                                <span class="text-xl">10</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold">Науковий семінар</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">Запрошуємо на науковий семінар на тему "Сучасні технології штучного інтелекту".</p>
+                                <a href="#" class="text-sm text-primary-color hover:underline">Детальніше</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <div class="event-date">
+                                <span class="text-xs">БЕР</span>
+                                <span class="text-xl">15</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold">Зустріч з роботодавцями</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">Представники провідних IT-компаній розкажуть про можливості стажування.</p>
+                                <a href="#" class="text-sm text-primary-color hover:underline">Детальніше</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex space-x-4">
+                            <div class="event-date" style="background-color: var(--accent-color);">
+                                <span class="text-xs">БЕР</span>
+                                <span class="text-xl">20</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold">Початок реєстрації на олімпіаду</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-1">Відкрито реєстрацію на щорічну олімпіаду з програмування.</p>
+                                <a href="#" class="text-sm text-primary-color hover:underline">Детальніше</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Статистика навчання -->
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+                        <h2 class="text-xl font-bold">
+                            <i class="fas fa-chart-line mr-3 text-primary-color"></i>Моя статистика
+                        </h2>
+                        <a href="#" class="text-primary-color hover:underline flex items-center text-sm">
+                            Повний звіт
+                        </a>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="stat-item bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <i class="fas fa-graduation-cap stat-icon text-blue-500"></i>
+                            <div class="stat-number text-blue-600 dark:text-blue-400">4.7</div>
+                            <div class="stat-label">Середній бал</div>
+                        </div>
+                        
+                        <div class="stat-item bg-green-50 dark:bg-green-900/20 rounded-lg">
+                            <i class="fas fa-tasks stat-icon text-green-500"></i>
+                            <div class="stat-number text-green-600 dark:text-green-400">92%</div>
+                            <div class="stat-label">Виконаних завдань</div>
+                        </div>
+                        
+                        <div class="stat-item bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                            <i class="fas fa-clock stat-icon text-purple-500"></i>
+                            <div class="stat-number text-purple-600 dark:text-purple-400">56</div>
+                            <div class="stat-label">Годин навчання</div>
+                        </div>
+                        
+                        <div class="stat-item bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                            <i class="fas fa-medal stat-icon text-yellow-500"></i>
+                            <div class="stat-number text-yellow-600 dark:text-yellow-400">12</div>
+                            <div class="stat-label">Досягнень</div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Корисні посилання -->
+                <section class="theme-card p-6 mb-8 fade-in">
+                    <div class="flex justify-between items-center mb-6 border-b pb-4 border-gray-200 dark:border-gray-700">
+                        <h2 class="text-xl font-bold">
+                            <i class="fas fa-link mr-3 text-primary-color"></i>Корисні посилання
+                        </h2>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <a href="#" class="flex items-center p-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <i class="fas fa-book-open text-primary-color mr-3"></i>
+                            <span>Електронна бібліотека</span>
+                        </a>
+                        <a href="#" class="flex items-center p-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <i class="fas fa-users text-primary-color mr-3"></i>
+                            <span>Студентська спільнота</span>
+                        </a>
+                        <a href="#" class="flex items-center p-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <i class="fas fa-file-alt text-primary-color mr-3"></i>
+                            <span>Розклад занять</span>
+                        </a>
+                        <a href="#" class="flex items-center p-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                            <i class="fas fa-building text-primary-color mr-3"></i>
+                            <span>Контакти деканату</span>
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="bg-gray-800 text-white p-8">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                        <h1 class="text-2xl font-bold tracking-wider">StudentConnect</h1>
+                    </div>
+                    <p class="mb-4">Інформаційна система для студентів, яка допомагає організувати навчальний процес та залишатися на зв'язку.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-accent-color"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white hover:text-accent-color"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white hover:text-accent-color"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="text-white hover:text-accent-color"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Навігація</h3>
+                    <ul class="space-y-2">
+                        <li><a href="student2.html" class="hover:text-accent-color">Головна</a></li>
+                        <li><a href="student4.html" class="hover:text-accent-color">Курси</a></li>
+                        <li><a href="student3.html" class="hover:text-accent-color">Події</a></li>
+                        <li><a href="#" class="hover:text-accent-color">Повідомлення</a></li>
+                        <li><a href="student1.html" class="hover:text-accent-color">Довідка</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Контакти</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+                            <span>вул. Академічна, 1, м. Київ, Україна</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-2"></i>
+                            <span>info@studentconnect.edu.ua</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-2"></i>
+                            <span>+38 (044) 123-45-67</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>© 2025 StudentConnect. Всі права захищені.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Функція перемикання теми
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Оновлення іконки
+            const themeIcon = document.querySelector('button[onclick="toggleTheme()"] i');
+            themeIcon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+        
+        // Завантаження збереженої теми
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Оновлення іконки
+            const themeIcon = document.querySelector('button[onclick="toggleTheme()"] i');
+            if (themeIcon) {
+                themeIcon.className = savedTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+            }
+            
+            // Відкриття/закриття мобільного меню
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const closeMenuBtn = document.getElementById('closeMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (mobileMenuBtn && closeMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.add('open');
+                });
+                
+                closeMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('open');
+                });
+            }
+            
+            // Відкриття/закриття календаря
+            const calendarBtn = document.getElementById('calendarBtn');
+            const closeCalendarBtn = document.getElementById('closeCalendarBtn');
+            const calendarModal = document.getElementById('calendarModal');
+            
+            if (calendarBtn && closeCalendarBtn && calendarModal) {
+                calendarBtn.addEventListener('click', () => {
+                    calendarModal.classList.add('open');
+                    renderCalendar();
+                });
+                
+                closeCalendarBtn.addEventListener('click', () => {
+                    calendarModal.classList.remove('open');
+                });
+                
+                // Закриття при кліку за межами вікна
+                calendarModal.addEventListener('click', (e) => {
+                    if (e.target === calendarModal) {
+                        calendarModal.classList.remove('open');
+                    }
+                });
+            }
+            
+            // Відображення календаря
+            function renderCalendar() {
+                const calendarGrid = document.getElementById('calendarGrid');
+                if (!calendarGrid) return;
+                
+                // Очистка сітки
+                calendarGrid.innerHTML = '';
+                
+                // Поточна дата
+                const now = new Date();
+                const currentMonth = now.getMonth();
+                const currentYear = now.getFullYear();
+                const today = now.getDate();
+                
+                // Перший день місяця
+                const firstDay = new Date(currentYear, currentMonth, 1);
+                // Останній день місяця
+                const lastDay = new Date(currentYear, currentMonth + 1, 0);
+                
+                // Кількість днів у місяці
+                const daysInMonth = lastDay.getDate();
+                
+                // День тижня першого дня місяця (0 - неділя, 1 - понеділок, ...)
+                let firstDayOfWeek = firstDay.getDay();
+                // Перетворення на європейський формат (1 - понеділок, ..., 7 - неділя)
+                firstDayOfWeek = firstDayOfWeek === 0 ? 7 : firstDayOfWeek;
+                
+                // Додавання пустих клітинок для вирівнювання
+                for (let i = 1; i < firstDayOfWeek; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day opacity-0';
+                    calendarGrid.appendChild(emptyDay);
+                }
+                
+                // Додавання днів
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    if (i === today) {
+                        dayElement.classList.add('active');
+                    }
+                    
+                    // Приклад подій (в реальному додатку це буде масив подій з бази даних)
+                    if (i === 6 || i === 10 || i === 15 || i === 20) {
+                        dayElement.classList.add('has-event');
+                    }
+                    
+                    dayElement.textContent = i;
+                    
+                    // Клік по дню для відображення подій
+                    dayElement.addEventListener('click', () => {
+                        // Видалення виділення з усіх днів
+                        document.querySelectorAll('.calendar-day').forEach(day => {
+                            day.classList.remove('active');
+                        });
+                        
+                        // Виділення обраного дня
+                        dayElement.classList.add('active');
+                        
+                        // Оновлення списку подій (в реальному додатку тут буде запит до сервера)
+                        const selectedDate = document.getElementById('selectedDate');
+                        if (selectedDate) {
+                            selectedDate.textContent = `Події на ${i} березня 2025`;
+                        }
+                        
+                        // Тут можна оновити список подій відповідно до обраного дня
+                    });
+                    
+                    calendarGrid.appendChild(dayElement);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
